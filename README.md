@@ -50,4 +50,4 @@ If `ricochet` lives outside the `PATH` Zed sees, set its location for the Agent 
 
 ## License
 
-[AGPL-3.0](LICENSE)
+[GPL-3.0](LICENSE)
