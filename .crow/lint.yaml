@@ -1,0 +1,38 @@
+when:
+  - event: pull_request
+    branch: ${CI_REPO_DEFAULT_BRANCH}
+  - event: push
+    branch:
+      - ${CI_REPO_DEFAULT_BRANCH}
+
+labels:
+  type: static
+
+cache:
+  - key: cargo-v1-{{ checksum "Cargo.lock" }}
+    restore_keys: ['cargo-v1-']
+    paths: [.cache/cargo/registry/index, .cache/cargo/registry/cache, .cache/cargo/git/db]
+
+steps:
+  rust-lint:
+    image: reg.ricochet.rs/docker.io/library/rust:1.99
+    depends_on: []
+    environment:
+      CARGO_HOME: ${CI_WORKSPACE}/.cache/cargo
+    commands:
+      - rustup component add rustfmt clippy
+      # Zed builds extensions for this target
+      - rustup target add wasm32-wasip2
+      - cargo fmt --check
+      - cargo clippy --target wasm32-wasip2 -- -D warnings
+      - cargo test
+      - cargo build --target wasm32-wasip2 --release
+
+  commitlint:
+    when:
+      - event: pull_request
+      - event: pull_request_edited
+    image: reg.ricochet.rs/docker.io/commitlint/commitlint:21.2.3
+    depends_on: []
+    commands:
+      - echo $${CI_COMMIT_PULL_REQUEST_TITLE} | commitlint
