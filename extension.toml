@@ -1,13 +1,11 @@
-id = "ricochet"
+id = "ricochet-lsp"
 name = "Ricochet"
 version = "0.1.0"
 schema_version = 1
 authors = ["ricochet <hello@ricochet.rs>"]
-description = "Check _ricochet.toml files and deploy to ricochet from the Agent Panel."
+description = "Check _ricochet.toml files with the ricochet language server."
 repository = "https://github.com/ricochet-rs/zed-extension"
 
 [language_servers.ricochet]
 name = "Ricochet"
 languages = ["TOML"]
-
-[context_servers.ricochet]

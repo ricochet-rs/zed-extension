@@ -775,7 +775,6 @@ dependencies = [
 name = "zed_ricochet"
 version = "0.1.0"
 dependencies = [
- "serde",
  "zed_extension_api",
 ]
 
